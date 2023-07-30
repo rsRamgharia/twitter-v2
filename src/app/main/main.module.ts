@@ -8,7 +8,11 @@ import { SidebarItemsComponent } from './shared/components/sidebar-items.compone
 import { HeaderComponent } from './shared/components/header.component';
 import { FollowBarComponent } from './shared/components/follow-bar.component';
 import { AvatarComponent } from './shared/components/avatar.component';
-
+import { LoginModalComponent } from './shared/auth/login-modal/login-modal.component';
+import { RegisterModalComponent } from './shared/auth/register-modal/register-modal.component';
+import { ModalComponent } from './shared/components/modal.component';
+import { ButtonComponent } from './shared/components/button.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,11 +21,16 @@ import { AvatarComponent } from './shared/components/avatar.component';
     SidebarItemsComponent,
     HeaderComponent,
     FollowBarComponent,
-    AvatarComponent
+    AvatarComponent,
+    LoginModalComponent,
+    RegisterModalComponent,
+    ModalComponent,
+    ButtonComponent
   ],
   imports: [
     CommonModule,
-    MainRoutingModule
+    MainRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class MainModule { }
