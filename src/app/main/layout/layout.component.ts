@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModelService } from '../shared/services/model.service';
+import { ConfigService } from '../shared/services/config.service';
 
 @Component({
   selector: 'app-layout',
@@ -7,5 +8,5 @@ import { ModelService } from '../shared/services/model.service';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
-  constructor(public modalService: ModelService) { }
+  constructor(public modalService: ModelService, public config: ConfigService) { }
 }

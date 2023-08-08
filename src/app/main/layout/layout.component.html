@@ -4,7 +4,10 @@
       <app-sidebar />
       <div class="col-span-3 lg:col-span-2 border-x-[1px] border-neutral-800">
         <!-- Header -->
-        <app-header title="Home" />
+        <app-header
+          [title]="config.headerTitle()"
+          [showBackArrow]="config.showBackArrow()"
+        />
         <router-outlet></router-outlet>
       </div>
       <!-- Follow Bar -->

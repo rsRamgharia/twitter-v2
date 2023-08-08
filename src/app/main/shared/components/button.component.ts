@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-button',
   template: `
     <button
+    (click)="onSubmit()"
       *ngIf="label"
       [disabled]="disabled"
       [ngClass]="{

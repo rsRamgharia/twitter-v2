@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModelService } from '../../services/model.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register-modal',
@@ -11,7 +12,7 @@ export class RegisterModalComponent implements OnInit {
 
   registerForm!: FormGroup;
 
-  constructor(public modalService: ModelService, private fb: FormBuilder) { }
+  constructor(public modalService: ModelService, private fb: FormBuilder, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -49,6 +50,10 @@ export class RegisterModalComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    //
+    const value = this.registerForm.value;
+    console.log(value);
+    this.authService.register(value).then(res => {
+      this.modalService.isRegisterModelOpen.set(false)
+    })
   }
 }

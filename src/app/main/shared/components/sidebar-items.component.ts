@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SidebarItems } from '../../interface';
 import { ModelService } from '../services/model.service';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'sidebar-items',
@@ -20,7 +22,7 @@ import { ModelService } from '../services/model.service';
     </div>
 
     <!-- Logout Button -->
-    <div class="flex flex-row items-center">
+    <div (click)="signOut()" *ngIf="authService.userData | async" class="flex flex-row items-center">
       <div class="material-icons text-white relative rounded-full h-14 w-14 flex items-center justify-center p-4 hover:bg-slate-300 hover:bg-opacity-10 cursor-pointer">
         logout
       </div>
@@ -30,7 +32,7 @@ import { ModelService } from '../services/model.service';
     </div>
 
     <!-- Tweet Button -->
-    <div class="mt-6 lg:hidden h-14 w-14 rounded-full p-4 flex items-center justify-center bg-sky-500 hover:bg-opacity-80 transition cursor-pointer">
+    <div (click)="openLoginModal()" class="mt-6 lg:hidden h-14 w-14 rounded-full p-4 flex items-center justify-center bg-sky-500 hover:bg-opacity-80 transition cursor-pointer">
       <svg viewBox="0 0 24 24" aria-hidden="true" fill="#fff">
         <g>
           <path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z"/>
@@ -48,7 +50,7 @@ import { ModelService } from '../services/model.service';
   styles: [
   ]
 })
-export class SidebarItemsComponent {
+export class SidebarItemsComponent implements OnInit, OnDestroy {
   items: Array<SidebarItems> = [
     {
       label: 'Home',
@@ -62,13 +64,35 @@ export class SidebarItemsComponent {
     }
   ]
 
-  constructor(private modalService: ModelService) { }
+  subscription!: Subscription;
+
+  constructor(private modalService: ModelService, public authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.subscription = this.authService.userData.subscribe((user) => {
+      if (!user) {
+        this.items = this.items.filter((item) => {
+          return item.label != 'Profile'
+        })
+      } else {
+        this.items.push({
+          label: 'Profile',
+          route: `/user/${this.authService.loggedInUserId}`,
+          icon: 'person'
+        })
+      }
+    })
+  }
 
   openLoginModal(): void {
     this.modalService.isLoginModelOpen.set(true);
   }
 
   signOut() {
+    this.authService.signOut()
+  }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

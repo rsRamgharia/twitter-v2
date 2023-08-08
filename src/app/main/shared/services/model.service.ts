@@ -12,4 +12,5 @@ export class ModelService {
 
   isRegisterModelOpen = signal<boolean>(false);
   isLoginModelOpen = signal<boolean>(false);
+  isEditModalOpen = signal<boolean>(false);
 }
